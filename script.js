@@ -1,5 +1,9 @@
 (function() {
+    console.log('✅ Script has started executing.');
+
+    // Create or update the message box
     function createOrUpdateMessageBox(message, timeSinceLastReload = '', timeUntilNextReload = '') {
+        console.log('🔄 Updating message box...');
         let box = document.getElementById('scriptStatusBox');
         if (!box) {
             box = document.createElement('div');
@@ -24,17 +28,21 @@
         `;
     }
 
+    // Generate random reload interval
     function getRandomInterval(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    // Format milliseconds into minutes and seconds
     function formatTime(ms) {
         const minutes = Math.floor(ms / 1000 / 60);
         const seconds = Math.floor((ms / 1000) % 60);
         return `${minutes}m ${seconds}s`;
     }
 
+    // Main logic: check access and reload if necessary
     function startAccessCheck() {
+        console.log('🔍 Starting access check...');
         const errorMessage = 'all our servers are full right now';
         const minInterval = 5 * 60 * 1000; // 5 minutes
         const maxInterval = 30 * 60 * 1000; // 30 minutes
@@ -55,7 +63,7 @@
             const timeUntilNextReload = formatTime(nextReloadInterval);
 
             createOrUpdateMessageBox('⚠️ Servers are full. Reloading...', timeSinceLastReload, timeUntilNextReload);
-            console.log('⚠️ Servers are full. Reloading in: ' + timeUntilNextReload);
+            console.log(`⚠️ Servers are full. Reloading in: ${timeUntilNextReload}`);
 
             setTimeout(function() {
                 lastReloadTime = Date.now();
@@ -66,9 +74,6 @@
         reloadIfAccessDenied();
     }
 
-    // Redirect to Flixtor and run the script
-    window.location.href = 'https://flixtor.to/home';
-    window.onload = function() {
-        startAccessCheck();
-    };
+    // Execute logic directly (no reliance on window.onload)
+    startAccessCheck();
 })();
