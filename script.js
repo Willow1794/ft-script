@@ -2,6 +2,14 @@
     try {
         console.log('✅ Script has started executing.');
 
+        // Redirect to Flixtor if not already on the page
+        const targetUrl = 'https://flixtor.to/home';
+        if (window.location.href !== targetUrl) {
+            console.log(`🌐 Redirecting to: ${targetUrl}`);
+            window.location.href = targetUrl;
+            return; // Stop execution until redirection completes
+        }
+
         // Create or update the message box
         function createOrUpdateMessageBox(message, timeSinceLastReload = '', timeUntilNextReload = '') {
             console.log('🔄 Attempting to update the message box...');
@@ -76,7 +84,7 @@
             reloadIfAccessDenied();
         }
 
-        // Execute logic directly (no reliance on window.onload)
+        // Execute logic directly
         startAccessCheck();
     } catch (error) {
         console.error('❌ An error occurred in the script:', error);
