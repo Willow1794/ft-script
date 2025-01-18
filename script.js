@@ -1,4 +1,4 @@
-(function() {
+(function () {
     try {
         console.log('✅ Script has started executing.');
 
@@ -8,7 +8,7 @@
         // Check if already on the target page
         if (window.location.href !== targetUrl) {
             console.log(`🌐 Redirecting to: ${targetUrl}`);
-            window.location.assign(targetUrl); // Use assign to force navigation
+            window.location.assign(targetUrl); // Redirect to the target page
             return; // Stop further script execution until redirection is complete
         }
 
@@ -79,7 +79,7 @@
                 createOrUpdateMessageBox('⚠️ Servers are full. Reloading...', timeSinceLastReload, timeUntilNextReload);
                 console.log(`⚠️ Servers are full. Reloading in: ${timeUntilNextReload}`);
 
-                setTimeout(function() {
+                setTimeout(function () {
                     lastReloadTime = Date.now();
                     location.reload();
                 }, nextReloadInterval);
@@ -88,13 +88,19 @@
             reloadIfAccessDenied();
         }
 
-        // Ensure script reinitializes properly after redirection
-        window.addEventListener('load', () => {
+        // Reinitialize script after redirection
+        function reinitializeScript() {
             console.log('🌐 Page loaded. Reinitializing script...');
             createOrUpdateMessageBox('✅ Script reinitialized after redirection.', '0m 0s', '0m 0s');
             startAccessCheck();
-        });
+        }
 
+        // Ensure script runs after redirection
+        if (document.readyState === 'complete') {
+            reinitializeScript();
+        } else {
+            window.addEventListener('load', reinitializeScript);
+        }
     } catch (error) {
         console.error('❌ An error occurred in the script:', error);
     }
