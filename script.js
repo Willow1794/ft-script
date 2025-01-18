@@ -14,7 +14,7 @@
 
         console.log('✅ Already on the target page. Continuing script execution...');
 
-        // Create or update the message box
+        // Function to create or update the message box
         function createOrUpdateMessageBox(message, timeSinceLastReload = '', timeUntilNextReload = '') {
             console.log('🔄 Attempting to update the message box...');
             let box = document.getElementById('scriptStatusBox');
@@ -88,8 +88,13 @@
             reloadIfAccessDenied();
         }
 
-        // Start the access check process
-        startAccessCheck();
+        // Ensure script reinitializes properly after redirection
+        window.addEventListener('load', () => {
+            console.log('🌐 Page loaded. Reinitializing script...');
+            createOrUpdateMessageBox('✅ Script reinitialized after redirection.', '0m 0s', '0m 0s');
+            startAccessCheck();
+        });
+
     } catch (error) {
         console.error('❌ An error occurred in the script:', error);
     }
